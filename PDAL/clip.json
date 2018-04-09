@@ -1,0 +1,16 @@
+{
+    "pipeline": [
+        "data/merged.las",
+        {
+            "column": "class",
+            "datasource": "data/buildings.geojson",
+            "dimension": "Classification",
+            "type": "filters.overlay"
+        },
+        {
+            "limits": "Classification[6:6]",
+            "type": "filters.range"
+        },
+        "data/buildings.las"
+    ]
+}

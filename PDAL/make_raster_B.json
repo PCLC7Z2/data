@@ -1,0 +1,17 @@
+{
+  "pipeline" : [
+    {
+      "type" : "readers.las",
+      "filename" : "data/merged.las",
+      "spatialreference" : "EPSG:3095"
+    },
+    {
+      "type" : "writers.gdal",
+      "resolution" : 0.1,
+      "dimension" : "Blue",
+      "output_type" : "mean",
+      "bounds" : "([-66008.9,  -65739.6], [-138880.37, -138797.78])",
+      "filename" : "data/raster_B.tif"
+    }
+  ]
+}

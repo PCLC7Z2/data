@@ -1,0 +1,7 @@
+node_modules
+**/.dat
+**/dat.json
+**/*.las
+**/*.laz
+**/*.tif
+**/*.tiff
