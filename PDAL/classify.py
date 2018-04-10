@@ -6,6 +6,7 @@ from osgeo import gdal, ogr, osr
 from skimage import exposure
 from skimage.segmentation import slic
 from sklearn import metrics
+from sklearn.ensemble import RandomForestClassifier
 from sklearn.neural_network import MLPClassifier
 from sklearn.preprocessing import StandardScaler
 
@@ -63,7 +64,7 @@ def segment_features(segment_pixels):
 
 def SLIC_object_creation(img, train_path, p_n_segments=50, p_compactness=1, p_sigma=0):
     """Creates objects based on a given segmentation algorithm"""
-    segments = slic(img, n_segments=p_n_segments, compactness=p_compactness, sigma=p_sigma, convert2lab=True, max_size_factor=3)
+    segments = slic(img, n_segments=p_n_segments, compactness=p_compactness, sigma=p_sigma, max_size_factor=3)
     segment_ids = np.unique(segments)
     rows, cols, n_bands = img.shape
     files = [f for f in os.listdir(train_path) if f.endswith('.shp')]
@@ -132,7 +133,7 @@ def SLIC_object_creation(img, train_path, p_n_segments=50, p_compactness=1, p_si
 scaler = StandardScaler()
 
 # load image
-image = "rgz.tif"
+image = "rgbz.tif"
 raster = gdal.Open(image, gdal.GA_ReadOnly)
 geo_transform = raster.GetGeoTransform()
 proj = raster.GetProjectionRef()
@@ -148,11 +149,13 @@ img = exposure.rescale_intensity(bands_data)
 training_path = "train/"
 validation_path = "train/"
 
-classifier = MLPClassifier(activation="relu", alpha=0.1, hidden_layer_sizes=(14, 14),
-                           learning_rate_init=0.001, solver="lbfgs")
+classifier = RandomForestClassifier()
+
+# classifier = MLPClassifier(activation="relu", alpha=0.1, hidden_layer_sizes=(14, 14),
+#                            learning_rate_init=0.01, solver="adam")
 # run the segmentation method
 
-test = SLIC_object_creation(img, training_path, 2000, 100, 10)
+test = SLIC_object_creation(img, training_path, 1500, 1, 0.5)
 
 # Fit only to the training data
 scaler.fit(test["tr_objects"])
@@ -183,8 +186,9 @@ output_fname = "classified.tif"
 
 # Just for the buildings to meet LAS specifications - pretty poor hack
 clf_b = clf == 3
-clf_b = clf_b * 6
-write_geotiff(output_fname, clf_b*6, geo_transform, proj, gdal.GDT_Byte)
+classified_b = clf_b * 6
+
+write_geotiff(output_fname, classified_b, geo_transform, proj, gdal.GDT_Byte)
 
 # this is stupid for now.
 sourceRaster = gdal.Open('classified.tif')
