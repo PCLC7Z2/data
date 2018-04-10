@@ -5,3 +5,5 @@ node_modules
 **/*.laz
 **/*.tif
 **/*.tiff
+**/*.csv
+**/*.idea

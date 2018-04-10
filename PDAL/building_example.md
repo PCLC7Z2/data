@@ -63,9 +63,7 @@ Once this is complete, we can use GDAL to merge them into a single multi-band ra
 gdal_merge.py -seperate -o /Users/iosefa/GitHub/data/PDAL/rgb.tif -co PHOTOMETRIC=MINISBLACK /Users/iosefa/GitHub/data/PDAL/raster_R.tif /Users/iosefa/GitHub/data/PDAL/raster_G.tif /Users/iosefa/GitHub/data/PDAL/raster_B.tif
 ```
 
-Now, we need to classify the raster to create the vector polygons. We will use object-based image analysis using SLIC segmentation and an artificial neural network - at some point I will update my own repos to share... This is done using Python, and because it is a little out of scope of this example, I will skip this part for now.
-
-... (actually, this failed - poor accuracy - made by hand for now)
+Now, we need to classify the raster to create the vector polygons. We will use object-based image analysis using SLIC segmentation and an artificial neural network - at some point I will update my own repos to share... This is done using Python, and because it is a little out of scope of this example, I will skip this part for now, but the python scripts are there.
 
 Now that we have our vector geometries. We can clip our point-cloud to the polygons.
 

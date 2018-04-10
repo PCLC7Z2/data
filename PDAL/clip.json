@@ -2,7 +2,7 @@
     "pipeline": [
         "data/merged.las",
         {
-            "column": "class",
+            "column": "classification",
             "datasource": "data/buildings.geojson",
             "dimension": "Classification",
             "type": "filters.overlay"
