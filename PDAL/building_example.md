@@ -28,7 +28,7 @@ To see what we are working with, it is important to observe the metadata:
 docker run -v /Users/iosefa/GitHub/data/PDAL/:/data pdal/pdal:1.7 pdal info data/28K2460011102-1.las --metadata
 ```
 
-We can see that the SRS is not defined and so the first thing to do will be to fix this. We can also merge the two point-cloud datasets into one. The "merge.json" file has a pipeline to do such tasks.
+We can see that the SRS is not defined and so the first thing to do will be to fix this. "Finding" the SRS is somewhat of a painful exercise that requires educated guess-work and brute-force validation. After going through a few likely possibilities and checking them with the [Shizuoka maps](https://pointcloud.pref.shizuoka.jp/lasmap/ankenmap?ankenno=28K2460011102), it is clear that the SRS is EPSG:6676. While re-writing the SRS, we can also merge the two point-cloud datasets into one. The "merge.json" file has a pipeline to do such tasks.
 
 ```bash
 docker run -v /Users/iosefa/GitHub/data/PDAL/:/data pdal/pdal:1.7 pdal pipeline data/merge.json
@@ -40,7 +40,7 @@ It is also apparent that all data is classified as "0", and none of the points h
 docker run -v /Users/iosefa/GitHub/data/PDAL/:/data pdal/pdal:1.7 pdal pipeline data/filter_classifier.json
 ```
 
-The fact that the LAS data is not classified obviously makes clipping to buildings a little challenging. However, there are several ways we can solve this problem. One is to just create vector polygons at each building and clip to the these polygons. A "simple" way of creating these polygons is to project the 3D point cloud model into 2D space and save the data in raster format and then use an image classifier on the raster data.
+The fact that the LAS data is not classified obviously makes clipping to buildings a little challenging. However, there are several ways we can solve this problem. One is to just create vector polygons at each building and clip to the these polygons. A "simple" way of creating these polygons is to save the point cloud data in raster format and then use an image classifier on the raster data.
 
 To start, we will write the point cloud as a raster and we will need the bounding box of the area of interest.
 

@@ -10,7 +10,7 @@
     },
     {
       "type": "writers.las",
-      "a_srs" : "EPSG:3095",
+      "a_srs" : "EPSG:6676",
       "compression": "true",
       "filename": "data/class0.laz"
     }

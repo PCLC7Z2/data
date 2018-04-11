@@ -3,7 +3,7 @@
     {
       "type" : "readers.las",
       "filename" : "data/merged.las",
-      "spatialreference" : "EPSG:3095"
+      "spatialreference" : "EPSG:6676"
     },
     {
       "type" : "writers.gdal",

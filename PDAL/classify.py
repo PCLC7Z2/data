@@ -147,7 +147,7 @@ img = exposure.rescale_intensity(bands_data)
 
 # define the training and validation data
 training_path = "train/"
-validation_path = "train/"
+validation_path = "validate/"
 
 classifier = RandomForestClassifier()
 
