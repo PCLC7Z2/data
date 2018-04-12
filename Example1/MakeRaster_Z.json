@@ -1,0 +1,16 @@
+{
+  "pipeline" : [
+    {
+      "type" : "readers.las",
+      "filename" : "data/merged.laz"
+    },
+    {
+      "type" : "writers.gdal",
+      "resolution" : 0.1,
+      "dimension" : "Z",
+      "output_type" : "max",
+      "bounds" : "([-66008.9,  -65739.6], [-138880.37, -138797.78])",
+      "filename" : "data/Z.tif"
+    }
+  ]
+}

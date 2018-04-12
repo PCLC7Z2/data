@@ -1,0 +1,12 @@
+{
+    "pipeline": [
+        "data/merged.laz",
+        {
+            "column": "classification",
+            "datasource": "data/classified.geojson",
+            "dimension": "Classification",
+            "type": "filters.overlay"
+        },
+        "data/merged_clf.laz"
+    ]
+}

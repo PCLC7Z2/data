@@ -1,0 +1,10 @@
+{
+    "pipeline": [
+        "data/merged_clf.laz",
+        {
+            "limits": "Classification[6:6]",
+            "type": "filters.range"
+        },
+        "data/buildings.laz"
+    ]
+}
