@@ -1,12 +1,13 @@
 # PDAL classify and clip to buildings example
 
 A processing example with PDAL. For more a more detailed look at PDAL, please see the [wiki](https://github.com/dotloom/data/wiki/PDAL).
+
 ***
-### Dependencies
 To do this example, we will need:
   - [GDAL](http://www.gdal.org/)
   - [jq](https://stedolan.github.io/jq/)
   - [Python 3.6.5](https://www.python.org/)
+  (and a bunch of packages for Python...)
 And to run the [pcdc-downloader](https://github.com/dotloom/pcdb-downloader), we will need [npm](https://www.npmjs.com/)
 ***
 
@@ -35,9 +36,9 @@ We will download some example data using the [pcdc-downloader](https://github.co
 To see what we are working with, we can observe the metadata as well as statistics of each of the data dimensions:
 
 ```bash
-docker run -v /Users/iosefa/GitHub/data/Example1/:/data pdal/pdal:1.7 pdal info data/28K2460011102-1.las --metadata
+docker run -v /Users/iosefa/GitHub/data/Example1/input/:/data pdal/pdal:1.7 pdal info data/28K2460011102-1.las --metadata
 
-docker run -v /Users/iosefa/GitHub/data/Example1/:/data pdal/pdal:1.7 pdal info data/28K2460011102-1.las --stats
+docker run -v /Users/iosefa/GitHub/data/Example1/input/:/data pdal/pdal:1.7 pdal info data/28K2460011102-1.las --stats
 ```
 
 There are several important things to note. The first is that the data is not classified (see [LAS documentation]((https://www.asprs.org/wp-content/uploads/2010/12/LAS_1_4_r13.pdf) for more on ASPRS classification), which makes this exercise worth it ;). We can also see that the SRS is not defined and so the first thing to do will be to fix this. "Finding" the SRS is somewhat of a painful exercise that requires educated guess-work and brute-force validation. After going through a few likely possibilities and checking them with the [Shizuoka maps](https://pointcloud.pref.shizuoka.jp/lasmap/ankenmap?ankenno=28K2460011102), it is clear that the SRS is EPSG:6676. We can also notice that the radiometric resolution of the data is not 8 bit. If we want to be able to visualize with this data in Cesium (as we will), we will need to cast the spectral data to 8 bit. We can re-write the SRS and re-cast the spectral data as 8-bit integers, as well as merge the different LAS files into a single file all using a pipeline. This is done in the preprocessing step below.
@@ -51,6 +52,8 @@ docker run -v /Users/iosefa/GitHub/data/Example1/:/data pdal/pdal:1.7 pdal pipel
 ```
 
 This pipeline reads all .las files as inputs and outputs a single compressed LAZ file.
+
+![Merged LAZ Screenshot](/Example1/screenshots/merged.png)
 
 ## Processing step
 
@@ -91,6 +94,8 @@ Now that we have our vector geometries. We can update the classification dimensi
 docker run -v /Users/iosefa/GitHub/data/Example1/:/data pdal/pdal:1.7 pdal pipeline data/apply_classifier.json
 ```
 
+![Classified Screenshot](/Example1/screenshots/classified.png)
+
 And then finally, we can clip to show buildings only.
 
 ```bash
@@ -129,6 +134,8 @@ python3 -m http.server 9000
 ```
 
 And then navigate to [http://localhost:9000/?resource=shizuoka](http://localhost:9000/?resource=shizuoka) in a web browser and we're done!
+
+![Cesium Screenshot](/Example1/screenshots/cesium.png)
 
 (note that the terrain might have to be set to "WGS84 Ellipsoid" in the web browser.)
 
