@@ -1,0 +1,30 @@
+{
+  "pipeline":[
+    "data/input/*.las",
+    {
+      "type" : "filters.merge"
+    },
+    {
+      "type": "filters.outlier",
+      "method": "statistical",
+      "multiplier": 3,
+      "mean_k": 8
+    },
+    {
+      "type": "filters.range",
+      "limits": "Classification![7:7],Z[-100:3000]"
+    },
+    {
+      "type":"filters.python",
+      "script":"data/fixcoloring.py",
+      "function":"cast_type",
+      "module":"anything"
+    },
+    {
+      "type":"writers.las",
+      "filename":  "data/merged.laz",
+      "a_srs" : "EPSG:6676",
+      "compression": "laszip"
+    }
+  ]
+}
