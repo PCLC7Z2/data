@@ -6,7 +6,7 @@ A processing example with PDAL. For more a more detailed look at PDAL, please se
 To do this example, we will need:
   - [GDAL](http://www.gdal.org/)
   - [jq](https://stedolan.github.io/jq/)
-  - [Python 3.6.5](https://www.python.org/)
+  - [Python 3.6](https://www.python.org/)
   (and a bunch of packages for Python...)
 And to run the [pcdc-downloader](https://github.com/dotloom/pcdb-downloader), we will need [npm](https://www.npmjs.com/)
 ***
@@ -110,7 +110,7 @@ Finally, we can load this classified point cloud data product in [Cesium](https:
 To start, let's clone the repo, which has all the files necessary statically serve the Cesium viewer:
 
 ```bash
-git clone https://github.com/connormanning/entwine-cesium-pages.git /Users/iosefa/GitHub/data/Example1/entwine-cesium-pages
+git clone https://github.com/connormanning/entwine-cesium-pages.git /Users/iosefa/GitHub/data/entwine-cesium-pages
 ```
 
 And pull the Entwine docker:
@@ -122,7 +122,10 @@ docker pull connormanning/entwine
 Now, create the 3D tiles for cesium using Entwine's cesium configuration template:
 
 ```bash
-docker run -v /Users/iosefa/GitHub/data/Example1/:$HOME connormanning/entwine build /var/entwine/config/cesium.json -i $HOME/merged_clf.laz -o $HOME/entwine-cesium-pages/data/shizuoka
+docker run -v /Users/iosefa/GitHub/data/:/data connormanning/entwine build /var/entwine/config/cesium.json -i /data/Example1/merged_clf.laz -o /data/entwine-cesium-pages/data/shizuoka
+
+docker run -v /Users/iosefa/GitHub/data/:/data connormanning/entwine build /var/entwine/config/cesium-truncated.json -i /data/Example2/merged.laz -o /data/entwine-cesium-pages/data/shizuoka_lg
+
 ```
 
 To view, statically serve the entwine-cesium-pages directory:
