@@ -103,7 +103,6 @@ docker run -v /Users/iosefa/GitHub/data/Example1/:/data pdal/pdal:1.7 pdal pipel
 ```
 
 ## Visualize in Cesium
-(This should be changed... taken from [https://github.com/connormanning/entwine-cesium-pages](https://github.com/connormanning/entwine-cesium-pages)).
 
 Finally, we can load this classified point cloud data product in [Cesium](https://cesium.com/). This step is a little involved, and it requires pulling the Entwine docker. Please check the wiki for more detailed information on Entwine and Cesium. We will follow steps detailed by [Connor Manning](https://github.com/connormanning/entwine-cesium-pages) to create a set of static pages to view our point cloud data on Cesium.    
 
