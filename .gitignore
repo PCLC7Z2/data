@@ -8,4 +8,5 @@ node_modules
 **/*.csv
 **/*.idea
 entwine-cesium-pages/
+**/*.DS_Store
 Example2/
