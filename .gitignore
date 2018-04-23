@@ -9,3 +9,4 @@ node_modules
 **/*.idea
 entwine-cesium-pages/
 Example2/
+**/*.DS_Store

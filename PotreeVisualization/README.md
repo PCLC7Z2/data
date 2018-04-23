@@ -18,10 +18,10 @@ We can start a local web server and view an example by using the `gulp watch` co
 
 Getting our own point cloud data into a Potree octree for visualization in Potree is done using [PotreeConverter](https://github.com/potree/PotreeConverter). This is easiest done in a docker. Local builds of the PotreeConverter is possible on Linux, Windows, and OSX, however it can be a pain to set this up.
 
-We will pull the docker image from [jonazpiazu](https://hub.docker.com/r/jonazpiazu/potree/) to do the hard work of building the Potree octree and use data from Example2 in this repo.
+We will pull the docker image from [iosefa/potreeconverter](https://hub.docker.com/r/iosefa/potreeconverter/) to do the hard work of building the Potree octree and use data from Example2 in this repo.
 
 ```bash
-docker pull jonazpiazu/potree
+docker pull iosefa/potreeconverter
 ```
 Let's create a directory to store the converted point clouds for Potree:
 
@@ -32,7 +32,8 @@ mkdir potree_converted
 And now, to run the potree converter:
 
 ```bash
-docker run -v ~/repos/dotloom/:/ jonazpiazu/potree PotreeConverter /data/Example2/merged.laz -o /potree/potree_converted --output-format LAZ -p shizuoka
+docker run -v ~/repos/dotloom/:/out iosefa/potreeconverter PotreeConverter /out/data/Example1/merged.laz -o /out/potree/potree_converted --output-format LAZ -p shizuoka
+
 ```
 
 This also created the an html file called shizuoka for viewing the point cloud in Potree. Head to [http://localhost:1234/potree_converted/shizuoka_lg.html](http://localhost:1234/potree_converted/shizuoka.html).

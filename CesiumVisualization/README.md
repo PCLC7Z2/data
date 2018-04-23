@@ -27,7 +27,7 @@ Note:
 ***
 
 ```bash
-docker run -v ~/repos/dotloom/:/ connormanning/entwine build /var/entwine/config/cesium-truncated.json -i /data/Example1/merged_clf.laz -o /data/entwine-cesium-pages/data/shizuoka
+docker run -v ~/repos/dotloom/data/:/out connormanning/entwine build /out/var/entwine/config/cesium-truncated.json -i /out/Example1/merged_clf.laz -o /out/entwine-cesium-pages/data/shizuoka
 
 ```
 
