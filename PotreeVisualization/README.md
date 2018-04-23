@@ -37,3 +37,5 @@ docker run -v ~/repos/dotloom/:/out iosefa/potreeconverter PotreeConverter /out/
 ```
 
 This also created the an html file called shizuoka for viewing the point cloud in Potree. Head to [http://localhost:1234/potree_converted/shizuoka_lg.html](http://localhost:1234/potree_converted/shizuoka.html).
+
+![Potree Screenshot](../Example1/screenshots/potree.png)

@@ -41,7 +41,7 @@ python3 -m http.server 9000
 
 And then navigate to [http://localhost:9000/?resource=shizuoka](http://localhost:9000/?resource=shizuoka) in a web browser and we're done!
 
-![Cesium Screenshot](/Example1/screenshots/cesium.png)
+![Cesium Screenshot](../Example1/screenshots/cesium.png)
 
 ***
 (note that cesium is sensitive to altitude and "incorrect" z values can result in the model being either too far above or below the terrain surface.)
