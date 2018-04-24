@@ -1,7 +1,6 @@
 import numpy as np
 import os
 import scipy
-import pdal
 
 from osgeo import gdal, ogr, osr
 from skimage import exposure
@@ -131,79 +130,79 @@ def SLIC_object_creation(img, train_path, p_n_segments=50, p_compactness=1, p_si
     return res
 
 
-#
-# scaler = StandardScaler()
-#
-# # load image
-# image = "rgbz.tif"
-# raster = gdal.Open(image, gdal.GA_ReadOnly)
-# geo_transform = raster.GetGeoTransform()
-# proj = raster.GetProjectionRef()
-# n_bands = raster.RasterCount
-# bands_data = []
-# for b in range(1, n_bands + 1):
-#     band = raster.GetRasterBand(b)
-#     bands_data.append(band.ReadAsArray())
-# bands_data = np.dstack(b for b in bands_data)
-# img = exposure.rescale_intensity(bands_data)
-#
-# # define the training and validation data
-# training_path = "train/"
-# validation_path = "validate/"
-#
-# classifier = RandomForestClassifier()
-#
-# # classifier = MLPClassifier(activation="relu", alpha=0.1, hidden_layer_sizes=(100,),
-# #                            learning_rate_init=0.01, solver="adam")
-# # run the segmentation method
-#
-# test = SLIC_object_creation(img, training_path, 1500, 1, 0.5)
-#
-# # Fit only to the training data
-# scaler.fit(test["tr_objects"])
-# StandardScaler(copy=True, with_mean=True, with_std=True)
-#
-# # Now apply the transformations to the data:
-# X_train = scaler.transform(test["tr_objects"])
-# X_test = scaler.transform(test["objects"])
-#
-# classifier.fit(X_train, test['tr_labels'])
-# predicted = classifier.predict(X_test) # this takes the best estimator and parameters
-# clf = np.copy(test['segments'])
-# # prepare validation
-# for segment_id, klass in zip(test['objects_ids'], predicted):
-#     clf[clf == segment_id] = klass
-# # load validation data
-# shapefiles = [os.path.join(validation_path, "%s.shp" % c) for c in test['classes_labels']]
-# verification_pixels = vectors_to_raster(shapefiles, test['rows'], test['cols'], geo_transform, proj)
-# for_verification = np.nonzero(verification_pixels)
-# verification_labels = verification_pixels[for_verification]
-# predicted_labels = clf[for_verification]
-#
-# # accuracy assessment
-# score = metrics.accuracy_score(verification_labels, predicted_labels)
-# print("Classification accuracy: %f" % score)
-#
-# output_fname = "classified.tif"
-#
-# # Just for the buildings to meet LAS specifications - pretty poor hack
-# clf_b = clf == 3
-# classified_b = clf_b * 6
-#
-# write_geotiff(output_fname, classified_b, geo_transform, proj, gdal.GDT_Byte)
-#
-# # this is stupid for now.
-# sourceRaster = gdal.Open('classified.tif')
-# band = sourceRaster.GetRasterBand(1)
-#
-# target = osr.SpatialReference()
-# target.ImportFromEPSG(6676)
-#
-# dst_layername = "classified"
-# drv = ogr.GetDriverByName("GeoJSON")
-# dst_ds = drv.CreateDataSource( dst_layername + ".geojson")
-# dst_layer = dst_ds.CreateLayer(dst_layername, srs=target)
-# newField = ogr.FieldDefn('classification', ogr.OFTInteger)
-# dst_layer.CreateField(newField)
-#
-# gdal.Polygonize(band, None, dst_layer, 0, [], callback=None)
+
+scaler = StandardScaler()
+
+# load image
+image = "rgbz.tif"
+raster = gdal.Open(image, gdal.GA_ReadOnly)
+geo_transform = raster.GetGeoTransform()
+proj = raster.GetProjectionRef()
+n_bands = raster.RasterCount
+bands_data = []
+for b in range(1, n_bands + 1):
+    band = raster.GetRasterBand(b)
+    bands_data.append(band.ReadAsArray())
+bands_data = np.dstack(b for b in bands_data)
+img = exposure.rescale_intensity(bands_data)
+
+# define the training and validation data
+training_path = "train/"
+validation_path = "validate/"
+
+classifier = RandomForestClassifier()
+
+# classifier = MLPClassifier(activation="relu", alpha=0.1, hidden_layer_sizes=(100,),
+#                            learning_rate_init=0.01, solver="adam")
+# run the segmentation method
+
+test = SLIC_object_creation(img, training_path, 1500, 1, 0.5)
+
+# Fit only to the training data
+scaler.fit(test["tr_objects"])
+StandardScaler(copy=True, with_mean=True, with_std=True)
+
+# Now apply the transformations to the data:
+X_train = scaler.transform(test["tr_objects"])
+X_test = scaler.transform(test["objects"])
+
+classifier.fit(X_train, test['tr_labels'])
+predicted = classifier.predict(X_test) # this takes the best estimator and parameters
+clf = np.copy(test['segments'])
+# prepare validation
+for segment_id, klass in zip(test['objects_ids'], predicted):
+    clf[clf == segment_id] = klass
+# load validation data
+shapefiles = [os.path.join(validation_path, "%s.shp" % c) for c in test['classes_labels']]
+verification_pixels = vectors_to_raster(shapefiles, test['rows'], test['cols'], geo_transform, proj)
+for_verification = np.nonzero(verification_pixels)
+verification_labels = verification_pixels[for_verification]
+predicted_labels = clf[for_verification]
+
+# accuracy assessment
+score = metrics.accuracy_score(verification_labels, predicted_labels)
+print("Classification accuracy: %f" % score)
+
+output_fname = "classified.tif"
+
+# Just for the buildings to meet LAS specifications - pretty poor hack
+clf_b = clf == 3
+classified_b = clf_b * 6
+
+write_geotiff(output_fname, classified_b, geo_transform, proj, gdal.GDT_Byte)
+
+# this is stupid for now.
+sourceRaster = gdal.Open('classified.tif')
+band = sourceRaster.GetRasterBand(1)
+
+target = osr.SpatialReference()
+target.ImportFromEPSG(6676)
+
+dst_layername = "classified"
+drv = ogr.GetDriverByName("GeoJSON")
+dst_ds = drv.CreateDataSource( dst_layername + ".geojson")
+dst_layer = dst_ds.CreateLayer(dst_layername, srs=target)
+newField = ogr.FieldDefn('classification', ogr.OFTInteger)
+dst_layer.CreateField(newField)
+
+gdal.Polygonize(band, None, dst_layer, 0, [], callback=None)
