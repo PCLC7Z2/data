@@ -6,8 +6,9 @@ A processing example with PDAL. For more a more detailed look at PDAL, please se
 To do this example, we will need:
   - [GDAL](http://www.gdal.org/)
   - [jq](https://stedolan.github.io/jq/)
-  - [Python 3.6](https://www.python.org/)
-  (and a bunch of packages for Python...)
+  - [Python 3](https://www.python.org/)
+And the following Python packages:
+  - [numpy](http://www.numpy.org/),[scipy](https://www.scipy.org/), [osgeo](http://gdal.org/python/), [skimage](http://scikit-image.org/), [sklearn](http://scikit-learn.org/)
 And to run the [pcdc-downloader](https://github.com/dotloom/pcdb-downloader), we will need [npm](https://www.npmjs.com/)
 ***
 
