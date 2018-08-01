@@ -14,3 +14,21 @@ docker run -it -v /Users/iosefa/repos/dotloom/data:/data connormanning/entwine b
 The basic entwine command used here is `build`. The `build` command simply generates an EPT dataset from point cloud data. The `-i` flag sets the input and the `-o` flag sets the output EPT dataset.
 
 This EPT data set is now ready to be viewed in your favorite point cloud viewer (or P-Next!).
+
+---
+
+Using another point cloud dataset as an example:
+
+```bash
+curl https://www.grassbook.org/wp-content/uploads/ncexternal/lidar_raleigh_nc_spm_height_feet.las -o ./lidar_raleigh_nc_spm_height_feet.las
+```
+
+This data needs a little bit of preprocessing. Using PDAL, we can assign the correct CRS to the data (if you dont have PDAL installed locally, use docker):
+
+```bash
+pdal pipeline EPT_Format/set_srs.json
+```
+And then, just as before:
+```bash
+docker run -it -v /Users/iosefa/repos/dotloom/data:/data connormanning/entwine build -i data/lidar_raleigh_nc_spm_height_feet.laz -o /data/EPT_Format/NorthCarolina
+```
